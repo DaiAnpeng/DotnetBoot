@@ -6,13 +6,13 @@ namespace DotnetBoot.Utilities
 {
     public static class TimestampHelper
     {
-        private static readonly DateTime utc = DateTime.Parse("1970-1-1 0:0:0");
+        private static readonly DateTime utcZero = new DateTime(1970, 1, 1, 0, 0, 0);
         public static long ToLongTimestamp(this DateTime time, out string error)
         {
             error = null;
             try
             {
-                return time.Subtract(utc.ToLocalTime()).Milliseconds;
+                return Convert.ToInt64(time.Subtract(utcZero).TotalMilliseconds);
             }
             catch (Exception ex)
             {
@@ -25,7 +25,7 @@ namespace DotnetBoot.Utilities
             error = null;
             try
             {
-                return time.Subtract(utc.ToLocalTime()).Seconds;
+                return Convert.ToInt32(time.Subtract(utcZero).TotalSeconds);
             }
             catch (Exception ex)
             {
@@ -38,12 +38,12 @@ namespace DotnetBoot.Utilities
             error = null;
             try
             {
-                return utc.AddMilliseconds(timestamp).ToLocalTime();
+                return utcZero.AddMilliseconds(timestamp);
             }
             catch (Exception ex)
             {
                 error = ex.Message;
-                return utc;
+                return utcZero;
             }
         }
         public static DateTime ToTime(this int timestamp, out string error)
@@ -51,12 +51,12 @@ namespace DotnetBoot.Utilities
             error = null;
             try
             {
-                return utc.AddSeconds(timestamp).ToLocalTime();
+                return utcZero.AddSeconds(timestamp);
             }
             catch (Exception ex)
             {
                 error = ex.Message;
-                return utc;
+                return utcZero;
             }
         }
         public enum TimeZoneEnum
